@@ -98,7 +98,7 @@ public class DivetSearch {
         SAMRecordIterator samItr = sam.iterator();
         
         samItr.forEachRemaining((s) -> {
-            Long hash = rn.ReadHash(s.getReadName());
+            Long hash = rn.ReadHash(rn.GetCloneName(s.getReadName(), s.getFlags()));
             if(divetSearch.contains(hash)){
                 printer.PrintOut(s, hash);
             }
