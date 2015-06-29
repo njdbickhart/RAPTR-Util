@@ -7,6 +7,7 @@ package DivetToReadName;
 
 import GetCmdOpt.SimpleModeCmdLineParser;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -44,9 +45,13 @@ public class DivetSearch {
         
         // Input checking
         String divet = cmd.GetValue(cmd.GetValue("divet"));
-        Path dfile = Paths.get(divet);
-        boolean isFile = Files.isReadable(dfile);
-        if(StrUtils.NumericCheck.isNumeric(divet) || divet.matches(".+,.+") && !isFile){
+        if(divet == null){
+            System.err.println("Error! Divet name entry is null!");
+        }
+        //Path dfile = Paths.get(divet);
+        File dfile = new File(divet);
+        boolean isFile = dfile.canRead();
+        if(StrUtils.NumericCheck.isNumeric(divet) || divet.matches(".+,.+")){
             // Input is numeric or contains commas
             divetSearch = Arrays.asList(divet.split(",")).stream()
                     .map(Long::valueOf)
@@ -54,7 +59,7 @@ public class DivetSearch {
         }else if(isFile){
             // We need to read in all of the values from a file
             divetSearch = new HashSet<>();
-            try(BufferedReader input = Files.newBufferedReader(dfile, Charset.defaultCharset())){
+            try(BufferedReader input = Files.newBufferedReader(Paths.get(dfile.getAbsolutePath()), Charset.defaultCharset())){
                 String line;
                 while((line = input.readLine()) != null){
                     line = line.trim();
