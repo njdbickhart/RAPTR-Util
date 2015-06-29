@@ -44,7 +44,7 @@ public class DivetSearch {
         }
         
         // Input checking
-        String divet = cmd.GetValue(cmd.GetValue("divet"));
+        String divet = cmd.GetValue("divet");
         if(divet == null){
             System.err.println("Error! Divet name entry is null!");
         }
